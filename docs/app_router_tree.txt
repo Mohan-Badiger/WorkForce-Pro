@@ -1,0 +1,101 @@
+workforce-pro/
+├── app/
+│   ├── layout.js                 # App Root Layout (HTML structure, fonts)
+│   ├── page.js                   # Public landing page / redirection
+│   ├── login/
+│   │   └── page.js               # Sign in screen (Credentials/Providers)
+│   ├── register/
+│   │   └── page.js               # Tenant & Administrator onboarding page
+│   ├── dashboard/
+│   │   ├── layout.js             # Sidebar layout context and auth checks
+│   │   └── page.js               # Main metrics KPI & Recharts analytics page
+│   ├── workers/
+│   │   ├── page.js               # Worker Directory list view
+│   │   ├── [id]/
+│   │   │   └── page.js           # Worker detailed profile & passbook view
+│   ├── attendance/
+│   │   ├── page.js               # Mark daily attendance sheet
+│   │   └── history/
+│   │       └── page.js           # Monthly calendar/table logs view
+│   ├── payroll/
+│   │   ├── page.js               # Payroll forecasting and run list
+│   │   └── history/
+│   │       └── page.js           # Historical salary settlement slips
+│   ├── advances/
+│   │   └── page.js               # Log advances / worker advances listing
+│   ├── expenses/
+│   │   └── page.js               # Expense dashboard & category breakdowns
+│   ├── projects/
+│   │   ├── page.js               # Projects registry (Create/View)
+│   │   └── [id]/
+│   │       └── page.js           # Project financial margin & labor tracking
+│   ├── reports/
+│   │   └── page.js               # Custom PDF generators layout
+│   └── api/
+│       ├── auth/
+│       │   └── [...nextauth]/
+│       │       └── route.js      # Auth.js route handlers API
+│       ├── workers/
+│       │   ├── route.js          # CRUD endpoint for workers
+│       │   └── [id]/
+│       │       └── route.js      # Fetch, update, delete worker
+│       ├── attendance/
+│       │   └── route.js          # Submit daily worker logs
+│       ├── payroll/
+│       │   ├── calculate/
+│       │   │   └── route.js      # Compute pending net salaries for range
+│       │   └── settle/
+│       │       └── route.js      # Execute pay stub ledger write
+│       ├── advances/
+│       │   └── route.js          # Log advance payments
+│       ├── expenses/
+│       │   ├── route.js          # Fetch or log company expenses
+│       │   └── [id]/
+│       │       └── route.js      # Delete or modify single expense
+│       ├── projects/
+│       │   ├── route.js          # Create or retrieve projects list
+│       │   └── [id]/
+│       │       ├── route.js      # Modify single project details
+│       │       └── profitability/
+│       │           └── route.js  # Query costs, labor wage expense sums
+│       └── reports/
+│           └── route.js          # Returns generated PDF blob binary
+├── components/
+│   ├── ui/                       # Shadcn UI base components
+│   │   ├── button.js
+│   │   ├── card.js
+│   │   ├── checkbox.js
+│   │   ├── dialog.js
+│   │   ├── dropdown-menu.js
+│   │   ├── input.js
+│   │   ├── select.js
+│   │   ├── table.js
+│   │   └── toast.js
+│   ├── sidebar.js                # Core responsive side navigation panel
+│   ├── header.js                 # Current project indicator & user profile
+│   └── charts/
+│       ├── wage-trend.js         # Recharts area graph element
+│       ├── cash-flow.js          # Recharts revenue vs expense bar chart
+│       └── cost-breakdown.js     # Recharts radial cost allocation chart
+├── lib/
+│   ├── dbConnect.js              # Cached connection engine for MongoDB
+│   ├── utils.js                  # Tailwind class helper (clsx/tailwind-merge)
+│   └── pdf-generator.js          # Server-side PDF generation utility
+├── models/                       # Mongoose entities
+│   ├── Tenant.js
+│   ├── User.js
+│   ├── Worker.js
+│   ├── Attendance.js
+│   ├── Advance.js
+│   ├── Expense.js
+│   ├── Project.js
+│   ├── Ledger.js
+│   └── Payroll.js
+├── public/                       # Assets & local icons
+├── .env.local                    # Secrets (MONGODB_URI, NEXTAUTH_SECRET, CLOUDINARY_URL)
+├── jsconfig.json                 # Path mappings aliases (@/*)
+├── middleware.js                 # Edge-level session and route checks
+├── next.config.js                # Next.js bundler settings
+├── package.json                  # Workspace node package mapping
+├── postcss.config.js             # Styling processor configurations
+└── tailwind.config.js            # Design tokens & color schemas
