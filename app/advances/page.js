@@ -112,27 +112,27 @@ export default function AdvancesPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-50">Worker Advance Loans</h1>
-          <p className="text-slate-500 text-sm">Issue salary advances, record notes, and audit outstanding loan entries.</p>
+          <p className="text-slate-400 dark:text-slate-500 text-sm">Issue salary advances, record notes, and audit outstanding loan entries.</p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
         {/* Disburse Form Panel */}
-        <Card className="bg-white">
+        <Card className="glass-panel hover-lift h-max">
           <CardHeader>
-            <CardTitle className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
-              <PlusCircle className="h-4 w-4 text-indigo-600" />
+            <CardTitle className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider flex items-center gap-1.5">
+              <PlusCircle className="h-4.5 w-4.5 text-indigo-600 dark:text-indigo-400" />
               Disburse Advance
             </CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleLogAdvance} className="space-y-4">
-              <div className="space-y-1">
-                <label className="text-xs font-bold text-slate-500 uppercase">Select Worker</label>
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Select Worker</label>
                 <Select value={selectedWorkerId} onChange={(e) => setSelectedWorkerId(e.target.value)}>
                   {workers.map((w) => (
                     <option key={w._id} value={w._id}>{w.name} ({w.role})</option>
@@ -140,44 +140,44 @@ export default function AdvancesPage() {
                 </Select>
               </div>
 
-              <div className="space-y-1">
-                <label className="text-xs font-bold text-slate-500 uppercase">Advance Amount (Rs) *</label>
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Advance Amount (Rs) *</label>
                 <div className="relative">
-                  <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 font-semibold">₹</span>
+                  <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400 dark:text-slate-500 font-semibold text-sm">₹</span>
                   <Input
                     type="number"
                     placeholder="e.g. 1500"
-                    className="pl-7"
+                    className="pl-8"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
                   />
                 </div>
               </div>
 
-              <div className="space-y-1">
-                <label className="text-xs font-bold text-slate-500 uppercase">Disbursement Date</label>
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Disbursement Date</label>
                 <div className="relative">
-                  <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+                  <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400 dark:text-slate-500">
                     <Calendar className="h-4 w-4" />
                   </span>
                   <Input
                     type="date"
-                    className="pl-9"
+                    className="pl-10"
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
                   />
                 </div>
               </div>
 
-              <div className="space-y-1">
-                <label className="text-xs font-bold text-slate-500 uppercase">Reason / Remarks Notes</label>
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Reason / Remarks Notes</label>
                 <div className="relative">
-                  <span className="absolute top-3 left-3 text-slate-400">
+                  <span className="absolute top-3 left-3.5 text-slate-400 dark:text-slate-500">
                     <MessageSquare className="h-4 w-4" />
                   </span>
                   <Input
-                    placeholder="Family emergency, travel costs etc..."
-                    className="pl-10"
+                    placeholder="Family emergency, travel etc..."
+                    className="pl-11"
                     value={notes}
                     onChange={(e) => setNotes(e.target.value)}
                   />
@@ -187,7 +187,7 @@ export default function AdvancesPage() {
               <Button
                 type="submit"
                 disabled={submitting}
-                className="w-full font-bold flex items-center justify-center gap-1.5 h-11 shadow-indigo-600/10"
+                className="w-full font-bold flex items-center justify-center gap-1.5 h-11 shadow-lg shadow-indigo-600/10 active-scale"
               >
                 {submitting ? "Processing Debit Entry..." : "Confirm & Pay Advance"}
               </Button>
@@ -197,8 +197,8 @@ export default function AdvancesPage() {
 
         {/* History Table Panel */}
         <div className="lg:col-span-2 space-y-3">
-          <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
-            <History className="h-4.5 w-4.5 text-indigo-600" />
+          <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider flex items-center gap-1.5">
+            <History className="h-4.5 w-4.5 text-indigo-600 dark:text-indigo-400" />
             Recent Advances Ledger
           </h3>
           {loading ? (
@@ -207,28 +207,28 @@ export default function AdvancesPage() {
               <p className="text-sm font-medium">Retrieving loan passbooks...</p>
             </div>
           ) : advances.length === 0 ? (
-            <Card className="py-12 text-center bg-white border-dashed">
-              <CardContent className="text-slate-400 text-sm">No advance payouts recorded yet.</CardContent>
+            <Card className="py-12 text-center bg-white/50 backdrop-blur-md dark:bg-slate-900/50">
+              <CardContent className="text-slate-500 dark:text-slate-400 text-sm font-medium">No advance payouts recorded yet.</CardContent>
             </Card>
           ) : (
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Date</TableHead>
-                  <TableHead>Worker Name</TableHead>
-                  <TableHead>Role</TableHead>
-                  <TableHead>Amount Billed</TableHead>
-                  <TableHead>Disbursement Notes</TableHead>
+                  <TableHead className="font-semibold text-slate-500 dark:text-slate-400">Date</TableHead>
+                  <TableHead className="font-semibold text-slate-500 dark:text-slate-400">Worker Name</TableHead>
+                  <TableHead className="font-semibold text-slate-500 dark:text-slate-400">Role</TableHead>
+                  <TableHead className="font-semibold text-slate-500 dark:text-slate-400">Amount Billed</TableHead>
+                  <TableHead className="font-semibold text-slate-500 dark:text-slate-400">Disbursement Notes</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {advances.map((adv) => (
                   <TableRow key={adv._id}>
-                    <TableCell className="font-mono text-xs text-slate-500">{formatDate(adv.date)}</TableCell>
-                    <TableCell className="font-semibold text-slate-900">{adv.workerId?.name || "Archived Worker"}</TableCell>
-                    <TableCell className="text-xs">{adv.workerId?.role || "N/A"}</TableCell>
-                    <TableCell className="font-bold text-red-500">-{formatCurrency(adv.amount)}</TableCell>
-                    <TableCell className="text-slate-500 text-xs italic">{adv.notes || "None"}</TableCell>
+                    <TableCell className="font-mono text-xs text-slate-400 dark:text-slate-500">{formatDate(adv.date)}</TableCell>
+                    <TableCell className="font-semibold text-slate-900 dark:text-slate-100">{adv.workerId?.name || "Archived Worker"}</TableCell>
+                    <TableCell className="text-xs text-slate-500 dark:text-slate-400 font-medium">{adv.workerId?.role || "N/A"}</TableCell>
+                    <TableCell className="font-bold text-rose-600 dark:text-rose-400">-{formatCurrency(adv.amount)}</TableCell>
+                    <TableCell className="text-slate-500 dark:text-slate-400 text-xs italic">{adv.notes || "None"}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>

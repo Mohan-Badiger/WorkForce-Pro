@@ -2,7 +2,7 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 
 const Table = React.forwardRef(({ className, ...props }, ref) => (
-  <div className="relative w-full overflow-auto rounded-lg border border-slate-100 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+  <div className="relative w-full overflow-auto rounded-2xl border border-slate-200/50 bg-white/70 backdrop-blur-md shadow-sm dark:border-slate-800/60 dark:bg-slate-900/70">
     <table
       ref={ref}
       className={cn("w-full caption-bottom text-sm", className)}
@@ -13,7 +13,7 @@ const Table = React.forwardRef(({ className, ...props }, ref) => (
 Table.displayName = "Table"
 
 const TableHeader = React.forwardRef(({ className, ...props }, ref) => (
-  <thead ref={ref} className={cn("bg-slate-50/75 dark:bg-slate-950/50 border-b border-slate-200 dark:border-slate-800", className)} {...props} />
+  <thead ref={ref} className={cn("bg-slate-50/50 dark:bg-slate-950/30 border-b border-slate-200/60 dark:border-slate-800/60", className)} {...props} />
 ))
 TableHeader.displayName = "TableHeader"
 
@@ -39,7 +39,7 @@ const TableRow = React.forwardRef(({ className, ...props }, ref) => (
   <tr
     ref={ref}
     className={cn(
-      "border-b border-slate-100 transition-colors hover:bg-slate-50/50 data-[state=selected]:bg-muted dark:border-slate-800/80 dark:hover:bg-slate-800/20",
+      "border-b border-slate-100/70 transition-colors hover:bg-slate-50/40 data-[state=selected]:bg-muted dark:border-slate-800/40 dark:hover:bg-slate-800/10",
       className
     )}
     {...props}

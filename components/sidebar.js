@@ -51,25 +51,25 @@ export default function Sidebar({ userRole }) {
       {/* Mobile Toggle Button */}
       <button 
         onClick={() => setIsOpen(!isOpen)} 
-        className="fixed top-4 left-4 z-50 md:hidden bg-indigo-600 text-white p-2 rounded-md hover:bg-indigo-700 shadow-md"
+        className="fixed top-4 left-4 z-50 md:hidden bg-indigo-600 text-white p-2.5 rounded-xl hover:bg-indigo-700 shadow-lg active:scale-95 transition-all duration-200"
       >
         {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
       </button>
 
       {/* Sidebar Wrapper */}
       <aside className={cn(
-        "fixed inset-y-0 left-0 z-40 w-64 bg-slate-900 border-r border-slate-800 text-slate-300 flex flex-col justify-between transition-transform duration-300 md:translate-x-0",
+        "fixed inset-y-0 left-0 z-40 w-64 bg-slate-950 border-r border-slate-900 text-slate-300 flex flex-col justify-between transition-transform duration-300 md:translate-x-0",
         isOpen ? "translate-x-0" : "-translate-x-full md:relative"
       )}>
         {/* Brand Header */}
-        <div className="p-6 border-b border-slate-800/80 flex items-center justify-between">
-          <Link href="/dashboard" className="flex items-center gap-2.5">
-            <div className="h-9 w-9 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold text-lg shadow-sm shadow-indigo-600/30">
+        <div className="p-6 border-b border-slate-900 flex items-center justify-between bg-slate-950/40 backdrop-blur-md">
+          <Link href="/dashboard" className="flex items-center gap-3 group">
+            <div className="h-10 w-10 rounded-xl bg-indigo-600 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-indigo-600/20 group-hover:scale-105 transition-all duration-300">
               W
             </div>
             <div>
-              <h1 className="font-bold text-white tracking-wide text-base leading-none">WorkForce Pro</h1>
-              <span className="text-[10px] text-indigo-400 font-semibold uppercase tracking-wider">SaaS ERP</span>
+              <h1 className="font-bold text-white tracking-wide text-base leading-none group-hover:text-indigo-400 transition-colors">WorkForce Pro</h1>
+              <span className="text-[9px] text-indigo-500 font-bold uppercase tracking-widest mt-1 block">SaaS ERP</span>
             </div>
           </Link>
         </div>
@@ -85,26 +85,29 @@ export default function Sidebar({ userRole }) {
                 href={item.href}
                 onClick={() => setIsOpen(false)}
                 className={cn(
-                  "flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200",
+                  "flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 group relative",
                   isActive
-                    ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/10 font-semibold"
-                    : "text-slate-400 hover:text-white hover:bg-slate-800/50"
+                    ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/20 font-semibold"
+                    : "text-slate-400 hover:text-slate-200 hover:bg-slate-900"
                 )}
               >
-                <Icon className={cn("h-4.5 w-4.5 shrink-0", isActive ? "text-white" : "text-slate-400 group-hover:text-white")} />
+                <Icon className={cn("h-4.5 w-4.5 shrink-0 transition-colors", isActive ? "text-white" : "text-slate-400 group-hover:text-slate-200")} />
                 {item.label}
+                {isActive && (
+                  <span className="absolute right-3.5 h-1.5 w-1.5 rounded-full bg-white animate-pulse" />
+                )}
               </Link>
             );
           })}
         </nav>
 
         {/* User profile / Logout footer */}
-        <div className="p-4 border-t border-slate-800/80">
+        <div className="p-4 border-t border-slate-900 bg-slate-950/20">
           <button
             onClick={() => signOut({ callbackUrl: "/login" })}
-            className="flex items-center gap-3 w-full px-4 py-3 rounded-lg text-sm text-slate-400 hover:text-white hover:bg-red-950/20 hover:border-red-900/10 transition-colors"
+            className="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm text-slate-400 hover:text-red-400 hover:bg-red-500/10 border border-transparent hover:border-red-500/10 transition-all duration-200 active:scale-[0.98]"
           >
-            <LogOut className="h-4.5 w-4.5 shrink-0 text-slate-400" />
+            <LogOut className="h-4.5 w-4.5 shrink-0 text-slate-400 transition-colors group-hover:text-red-400" />
             Sign Out
           </button>
         </div>

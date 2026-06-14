@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -10,7 +10,7 @@ import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from "@
 import { Dialog, DialogContent, DialogHeader, DialogFooter, DialogTitle } from "@/components/ui/dialog"
 import { useToast } from "@/components/ui/toast"
 import { formatCurrency } from "@/lib/utils"
-import { Users, Search, Plus, UserPlus, Eye, Archive } from "lucide-react"
+import { Users, Search, Plus, UserPlus, Eye, Archive, IndianRupee, Briefcase } from "lucide-react"
 
 export default function WorkersPage() {
   const [workers, setWorkers] = useState([]);
@@ -31,7 +31,7 @@ export default function WorkersPage() {
   const [emergencyRelationship, setEmergencyRelationship] = useState("");
   const [emergencyPhone, setEmergencyPhone] = useState("");
 
-  const fetchWorkers = React.useCallback(async () => {
+  const fetchWorkers = useCallback(async () => {
     setLoading(true);
     try {
       const res = await fetch(`/api/workers?search=${search}&status=${status}`);
@@ -143,26 +143,73 @@ export default function WorkersPage() {
   return (
     <div className="space-y-6">
       {/* Title section */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-50">Worker Directory</h1>
-          <p className="text-slate-500 text-sm">Add, edit, archive workers, and audit active wage profiles.</p>
+          <p className="text-slate-400 dark:text-slate-500 text-sm">Add, edit, archive workers, and audit active wage profiles.</p>
         </div>
-        <Button onClick={() => setOpenAdd(true)} className="flex items-center gap-1.5 font-semibold">
+        <Button onClick={() => setOpenAdd(true)} className="flex items-center gap-1.5 font-bold shadow-lg shadow-indigo-600/10 active-scale">
           <Plus className="h-4 w-4" /> Add Worker
         </Button>
       </div>
 
+      {/* Stats Summary Panel */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <Card className="hover-lift border-l-4 border-l-blue-500 bg-white/70 backdrop-blur-md dark:bg-slate-900/70 border border-slate-200/50 dark:border-slate-800/60 shadow-sm">
+          <div className="p-5 flex items-center justify-between">
+            <div>
+              <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Active Workforce</p>
+              <p className="text-2xl font-bold text-slate-800 dark:text-slate-200 mt-1">{workers.filter(w => w.status === "active").length} Workers</p>
+            </div>
+            <div className="h-10 w-10 rounded-xl bg-blue-50 dark:bg-blue-950/40 flex items-center justify-center text-blue-500 dark:text-blue-400">
+              <Users className="h-5 w-5" />
+            </div>
+          </div>
+        </Card>
+
+        <Card className="hover-lift border-l-4 border-l-emerald-500 bg-white/70 backdrop-blur-md dark:bg-slate-900/70 border border-slate-200/50 dark:border-slate-800/60 shadow-sm">
+          <div className="p-5 flex items-center justify-between">
+            <div>
+              <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Average Daily Wage</p>
+              <p className="text-2xl font-bold text-slate-800 dark:text-slate-200 mt-1">
+                {formatCurrency(
+                  workers.filter(w => w.status === "active").length > 0
+                    ? Math.round(workers.filter(w => w.status === "active").reduce((acc, curr) => acc + curr.dailyWage, 0) / workers.filter(w => w.status === "active").length)
+                    : 0
+                )}
+              </p>
+            </div>
+            <div className="h-10 w-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 flex items-center justify-center text-emerald-500 dark:text-emerald-400">
+              <IndianRupee className="h-5 w-5" />
+            </div>
+          </div>
+        </Card>
+
+        <Card className="hover-lift border-l-4 border-l-violet-500 bg-white/70 backdrop-blur-md dark:bg-slate-900/70 border border-slate-200/50 dark:border-slate-800/60 shadow-sm">
+          <div className="p-5 flex items-center justify-between">
+            <div>
+              <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Specialist Roles</p>
+              <p className="text-2xl font-bold text-slate-800 dark:text-slate-200 mt-1">
+                {new Set(workers.filter(w => w.status === "active").map(w => w.role)).size} Categories
+              </p>
+            </div>
+            <div className="h-10 w-10 rounded-xl bg-violet-50 dark:bg-violet-950/40 flex items-center justify-center text-violet-500 dark:text-violet-400">
+              <Briefcase className="h-5 w-5" />
+            </div>
+          </div>
+        </Card>
+      </div>
+
       {/* Search Filter Widgets */}
-      <Card className="bg-white/70 backdrop-blur-md border-slate-200/60 shadow-sm">
+      <Card className="glass-panel hover-lift">
         <CardContent className="p-4 flex flex-col md:flex-row gap-4">
           <div className="flex-1 relative">
-            <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+            <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400 dark:text-slate-500">
               <Search className="h-4 w-4" />
             </span>
             <Input
               placeholder="Search by worker name or role..."
-              className="pl-9"
+              className="pl-10"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
@@ -184,52 +231,54 @@ export default function WorkersPage() {
           <p className="text-sm font-medium">Retrieving worker ledger profiles...</p>
         </div>
       ) : workers.length === 0 ? (
-        <Card className="py-16 text-center bg-white">
+        <Card className="py-16 text-center bg-white/50 backdrop-blur-md dark:bg-slate-900/50">
           <CardContent className="flex flex-col items-center justify-center gap-3">
-            <Users className="h-10 w-10 text-slate-300" />
-            <p className="text-slate-500 font-medium text-sm">No worker records found matching filters.</p>
+            <Users className="h-10 w-10 text-slate-300 dark:text-slate-700" />
+            <p className="text-slate-500 dark:text-slate-400 font-medium text-sm">No worker records found matching filters.</p>
           </CardContent>
         </Card>
       ) : (
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Worker Name</TableHead>
-              <TableHead>Role</TableHead>
-              <TableHead>Mobile</TableHead>
-              <TableHead>Daily Wage</TableHead>
-              <TableHead>Aadhaar Number</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
+              <TableHead className="font-semibold text-slate-500 dark:text-slate-400">Worker Name</TableHead>
+              <TableHead className="font-semibold text-slate-500 dark:text-slate-400">Role</TableHead>
+              <TableHead className="font-semibold text-slate-500 dark:text-slate-400">Mobile</TableHead>
+              <TableHead className="font-semibold text-slate-500 dark:text-slate-400">Daily Wage</TableHead>
+              <TableHead className="font-semibold text-slate-500 dark:text-slate-400">Aadhaar Number</TableHead>
+              <TableHead className="text-right font-semibold text-slate-500 dark:text-slate-400">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {workers.map((worker) => (
               <TableRow key={worker._id}>
-                <TableCell className="font-semibold text-slate-900">{worker.name}</TableCell>
+                <TableCell className="font-semibold text-slate-900 dark:text-slate-100">{worker.name}</TableCell>
                 <TableCell>
-                  <span className="px-2.5 py-1 text-xs font-semibold rounded-full bg-slate-100 text-slate-800">
+                  <span className="px-2.5 py-1 text-xs font-semibold rounded-xl bg-indigo-50 text-indigo-600 border border-indigo-100/30 dark:bg-indigo-950/40 dark:text-indigo-400 dark:border-indigo-900/30">
                     {worker.role}
                   </span>
                 </TableCell>
-                <TableCell className="text-slate-500 text-xs">{worker.mobileNumber}</TableCell>
-                <TableCell className="font-semibold">{formatCurrency(worker.dailyWage)}</TableCell>
-                <TableCell className="text-slate-400 font-mono text-xs">{worker.aadhaarNumber}</TableCell>
-                <TableCell className="text-right flex items-center justify-end gap-2">
-                  <Link href={`/workers/${worker._id}`}>
-                    <Button variant="outline" size="sm" className="flex items-center gap-1">
-                      <Eye className="h-3.5 w-3.5" /> View Ledger
-                    </Button>
-                  </Link>
-                  {worker.status === "active" && (
-                    <Button 
-                      variant="ghost" 
-                      size="sm" 
-                      onClick={() => handleArchiveWorker(worker._id)}
-                      className="text-red-500 hover:text-red-700 hover:bg-red-50"
-                    >
-                      <Archive className="h-3.5 w-3.5" />
-                    </Button>
-                  )}
+                <TableCell className="text-slate-500 dark:text-slate-400 text-xs font-medium">{worker.mobileNumber}</TableCell>
+                <TableCell className="font-bold text-slate-800 dark:text-slate-200">{formatCurrency(worker.dailyWage)}</TableCell>
+                <TableCell className="text-slate-400 dark:text-slate-500 font-mono text-xs">{worker.aadhaarNumber}</TableCell>
+                <TableCell className="text-right">
+                  <div className="flex items-center justify-end gap-2">
+                    <Link href={`/workers/${worker._id}`}>
+                      <Button variant="outline" size="sm" className="flex items-center gap-1 active-scale text-xs">
+                        <Eye className="h-3.5 w-3.5" /> View Ledger
+                      </Button>
+                    </Link>
+                    {worker.status === "active" && (
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        onClick={() => handleArchiveWorker(worker._id)}
+                        className="text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950/20 active-scale"
+                      >
+                        <Archive className="h-3.5 w-3.5" />
+                      </Button>
+                    )}
+                  </div>
                 </TableCell>
               </TableRow>
             ))}

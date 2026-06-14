@@ -9,7 +9,7 @@ import { Card, CardHeader, CardContent, CardTitle, CardDescription } from "@/com
 import { Dialog, DialogContent, DialogHeader, DialogFooter, DialogTitle } from "@/components/ui/dialog"
 import { Checkbox } from "@/components/ui/checkbox"
 import { useToast } from "@/components/ui/toast"
-import { formatCurrency, formatDate } from "@/lib/utils"
+import { formatCurrency, formatDate, cn } from "@/lib/utils"
 import { Briefcase, Plus, FolderKanban, Users, TrendingUp, Calendar, ArrowRight } from "lucide-react"
 
 export default function ProjectsPage() {
@@ -144,41 +144,51 @@ export default function ProjectsPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.map((project) => (
-            <Card key={project._id} className="bg-white flex flex-col justify-between hover:border-indigo-200 transition-colors">
+            <Card 
+              key={project._id} 
+              className={cn(
+                "hover-lift flex flex-col justify-between border border-slate-200/50 dark:border-slate-800/60 shadow-sm",
+                project.status === "active" ? "border-l-4 border-l-emerald-500" :
+                project.status === "completed" ? "border-l-4 border-l-indigo-500" :
+                project.status === "on-hold" ? "border-l-4 border-l-rose-500" :
+                "border-l-4 border-l-amber-500"
+              )}
+            >
               <CardHeader className="pb-3">
                 <div className="flex justify-between items-start gap-2">
-                  <h3 className="font-bold text-base text-slate-900 leading-snug">{project.name}</h3>
-                  <span className={`px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider rounded-full ${
+                  <h3 className="font-bold text-base text-slate-900 dark:text-slate-100 leading-snug">{project.name}</h3>
+                  <span className={cn(
+                    "px-2.5 py-1 text-[9px] font-bold uppercase tracking-widest rounded-xl border",
                     project.status === "active"
-                      ? "bg-green-50 text-green-700 border border-green-200"
+                      ? "bg-emerald-50 text-emerald-600 border-emerald-100 dark:bg-emerald-950/20 dark:text-emerald-400 dark:border-emerald-900/30"
                       : project.status === "completed"
-                      ? "bg-indigo-50 text-indigo-700 border border-indigo-200"
-                      : "bg-amber-50 text-amber-700 border border-amber-200"
-                  }`}>
+                      ? "bg-indigo-50 text-indigo-600 border-indigo-100 dark:bg-indigo-950/20 dark:text-indigo-400 dark:border-indigo-900/30"
+                      : "bg-amber-50 text-amber-600 border-amber-100 dark:bg-amber-950/20 dark:text-amber-400 dark:border-amber-900/30"
+                  )}>
                     {project.status}
                   </span>
                 </div>
                 <CardDescription className="text-xs">Client: {project.clientName}</CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4 pb-4.5 pt-2">
+              <CardContent className="space-y-4 pb-4 pt-2">
                 <div className="grid grid-cols-2 gap-4 text-xs">
                   <div>
-                    <p className="text-slate-400 font-medium">Contract Value</p>
-                    <p className="font-semibold text-slate-900 mt-0.5">{formatCurrency(project.projectValue)}</p>
+                    <p className="text-slate-400 dark:text-slate-500 font-semibold uppercase tracking-widest text-[9px]">Contract Value</p>
+                    <p className="font-bold text-slate-900 dark:text-slate-200 mt-1.5 text-sm">{formatCurrency(project.projectValue)}</p>
                   </div>
                   <div>
-                    <p className="text-slate-400 font-medium">Assigned Force</p>
-                    <p className="font-semibold text-slate-900 mt-0.5">{project.assignedWorkers?.length || 0} Workers</p>
+                    <p className="text-slate-400 dark:text-slate-500 font-semibold uppercase tracking-widest text-[9px]">Assigned Force</p>
+                    <p className="font-bold text-slate-900 dark:text-slate-200 mt-1.5 text-sm">{project.assignedWorkers?.length || 0} Workers</p>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-1.5 text-xs text-slate-500">
-                  <Calendar className="h-3.5 w-3.5" /> Start: {formatDate(project.startDate)}
+                <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 font-medium pt-1">
+                  <Calendar className="h-3.5 w-3.5 text-slate-400" /> Start: {formatDate(project.startDate)}
                 </div>
               </CardContent>
-              <div className="px-6 py-4 border-t border-slate-50 dark:border-slate-800 flex items-center justify-end bg-slate-50/50 rounded-b-xl">
+              <div className="px-6 py-4 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-end bg-slate-50/30 dark:bg-slate-950/30 rounded-b-2xl">
                 <Link href={`/projects/${project._id}`}>
-                  <Button variant="outline" size="sm" className="flex items-center gap-1">
+                  <Button variant="outline" size="sm" className="flex items-center gap-1 active-scale text-xs">
                     Manage Finance <ArrowRight className="h-3.5 w-3.5" />
                   </Button>
                 </Link>

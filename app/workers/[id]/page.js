@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react"
-import Link from "next/navigation"
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card"
 import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from "@/components/ui/table"
@@ -91,28 +91,38 @@ export default function WorkerProfilePage({ params }) {
 
       {/* Financial Stats Grid */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-        <Card className="bg-white">
-          <CardHeader className="pb-1.5"><p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Days Worked</p></CardHeader>
-          <CardContent><p className="text-lg font-bold text-slate-800">{stats.totalDaysWorked} Days</p></CardContent>
+        <Card className="hover-lift border-l-4 border-l-blue-500 bg-white dark:bg-slate-900">
+          <CardHeader className="pb-1.5"><p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Days Worked</p></CardHeader>
+          <CardContent><p className="text-lg font-bold text-slate-800 dark:text-slate-200">{stats.totalDaysWorked} Days</p></CardContent>
         </Card>
-        <Card className="bg-white">
-          <CardHeader className="pb-1.5"><p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total Earnings</p></CardHeader>
-          <CardContent><p className="text-lg font-bold text-green-600">{formatCurrency(stats.totalEarnings)}</p></CardContent>
+        <Card className="hover-lift border-l-4 border-l-emerald-500 bg-white dark:bg-slate-900">
+          <CardHeader className="pb-1.5"><p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Total Earnings</p></CardHeader>
+          <CardContent><p className="text-lg font-bold text-emerald-600 dark:text-emerald-400">{formatCurrency(stats.totalEarnings)}</p></CardContent>
         </Card>
-        <Card className="bg-white">
-          <CardHeader className="pb-1.5"><p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total Advances</p></CardHeader>
-          <CardContent><p className="text-lg font-bold text-slate-800">{formatCurrency(stats.totalAdvances)}</p></CardContent>
+        <Card className="hover-lift border-l-4 border-l-rose-500 bg-white dark:bg-slate-900">
+          <CardHeader className="pb-1.5"><p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Total Advances</p></CardHeader>
+          <CardContent><p className="text-lg font-bold text-slate-800 dark:text-slate-200">{formatCurrency(stats.totalAdvances)}</p></CardContent>
         </Card>
-        <Card className="bg-white">
-          <CardHeader className="pb-1.5"><p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Salary Settlements</p></CardHeader>
-          <CardContent><p className="text-lg font-bold text-slate-800">{formatCurrency(stats.totalSalaryPaid)}</p></CardContent>
+        <Card className="hover-lift border-l-4 border-l-sky-500 bg-white dark:bg-slate-900">
+          <CardHeader className="pb-1.5"><p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Salary Settlements</p></CardHeader>
+          <CardContent><p className="text-lg font-bold text-slate-800 dark:text-slate-200">{formatCurrency(stats.totalSalaryPaid)}</p></CardContent>
         </Card>
-        <Card className="bg-indigo-50 border-indigo-100 col-span-2 md:col-span-1">
-          <CardHeader className="pb-1.5"><p className="text-[10px] font-bold text-indigo-500 uppercase tracking-wider">Outstanding Balance</p></CardHeader>
+        <Card className={`hover-lift col-span-2 md:col-span-1 border-l-4 ${
+          stats.pendingSalary >= 0 
+            ? "bg-indigo-50/30 border-l-indigo-500 dark:bg-indigo-950/20" 
+            : "bg-rose-50/30 border-l-rose-500 dark:bg-rose-950/20"
+        }`}>
+          <CardHeader className="pb-1.5">
+            <p className={`text-[10px] font-bold uppercase tracking-wider ${
+              stats.pendingSalary >= 0 ? "text-indigo-500 dark:text-indigo-400" : "text-rose-500 dark:text-rose-400"
+            }`}>
+              Outstanding Balance
+            </p>
+          </CardHeader>
           <CardContent>
-            <p className={`text-lg font-bold ${stats.pendingSalary >= 0 ? "text-indigo-700" : "text-red-600"}`}>
+            <p className={`text-lg font-bold ${stats.pendingSalary >= 0 ? "text-indigo-600 dark:text-indigo-400" : "text-rose-600 dark:text-rose-400"}`}>
               {formatCurrency(Math.abs(stats.pendingSalary))}
-              <span className="text-[9px] block text-slate-400 font-semibold mt-0.5">
+              <span className="text-[9px] block text-slate-400 dark:text-slate-500 font-semibold mt-0.5">
                 {stats.pendingSalary >= 0 ? "Owed to Worker" : "Worker owes Company"}
               </span>
             </p>

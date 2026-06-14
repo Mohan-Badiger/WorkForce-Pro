@@ -46,7 +46,4 @@ const TenantSchema = new mongoose.Schema(
   }
 );
 
-// Indexes
-TenantSchema.index({ email: 1 });
-
 export default mongoose.models.Tenant || mongoose.model('Tenant', TenantSchema);

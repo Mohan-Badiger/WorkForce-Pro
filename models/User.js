@@ -41,7 +41,6 @@ const UserSchema = new mongoose.Schema(
 );
 
 // Compounded indexes for fast user lookup and authorization queries
-UserSchema.index({ email: 1 });
 UserSchema.index({ tenantId: 1, role: 1 });
 
 export default mongoose.models.User || mongoose.model('User', UserSchema);

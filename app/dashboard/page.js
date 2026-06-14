@@ -7,7 +7,7 @@ import Advance from "@/models/Advance"
 import Expense from "@/models/Expense"
 import Ledger from "@/models/Ledger"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { formatCurrency } from "@/lib/utils"
+import { formatCurrency, cn } from "@/lib/utils"
 import WageTrendChart from "@/components/charts/wage-trend"
 import CashFlowChart from "@/components/charts/cash-flow"
 import CostBreakdownChart from "@/components/charts/cost-breakdown"
@@ -85,25 +85,26 @@ export default async function DashboardPage() {
   const monthlyWages = monthlyWagesRecords.reduce((acc, curr) => acc + curr.wageEarned, 0);
 
   const stats = [
-    { title: "Total Workers", value: totalWorkers, icon: Users, desc: "Active employees" },
-    { title: "Present Today", value: presentToday, icon: CheckCircle, desc: "Workers logged today" },
-    { title: "Active Projects", value: activeProjectsCount, icon: Briefcase, desc: "In progress" },
-    { title: "Weekly Wages", value: formatCurrency(weeklyWages), icon: IndianRupee, desc: "Past 7 days" },
-    { title: "Monthly Wages", value: formatCurrency(monthlyWages), icon: IndianRupee, desc: "Past 30 days" },
-    { title: "Total Advances", value: formatCurrency(totalAdvances), icon: TrendingUp, desc: "Disbursed amount" },
-    { title: "Pending Payroll", value: formatCurrency(pendingSalaries), icon: IndianRupee, desc: "Owed to workers" },
-    { title: "Revenue Pipeline", value: formatCurrency(totalRevenue), icon: ArrowUpRight, desc: "Total project value" },
-    { title: "Other Expenses", value: formatCurrency(totalExpenses), icon: TrendingDown, desc: "Material & operations" },
+    { title: "Total Workers", value: totalWorkers, icon: Users, desc: "Active employees", borderColor: "border-l-blue-500" },
+    { title: "Present Today", value: presentToday, icon: CheckCircle, desc: "Workers logged today", borderColor: "border-l-teal-500" },
+    { title: "Active Projects", value: activeProjectsCount, icon: Briefcase, desc: "In progress", borderColor: "border-l-violet-500" },
+    { title: "Weekly Wages", value: formatCurrency(weeklyWages), icon: IndianRupee, desc: "Past 7 days", borderColor: "border-l-emerald-500" },
+    { title: "Monthly Wages", value: formatCurrency(monthlyWages), icon: IndianRupee, desc: "Past 30 days", borderColor: "border-l-emerald-500" },
+    { title: "Total Advances", value: formatCurrency(totalAdvances), icon: TrendingUp, desc: "Disbursed amount", borderColor: "border-l-rose-500" },
+    { title: "Pending Payroll", value: formatCurrency(pendingSalaries), icon: IndianRupee, desc: "Owed to workers", borderColor: "border-l-amber-500" },
+    { title: "Revenue Pipeline", value: formatCurrency(totalRevenue), icon: ArrowUpRight, desc: "Total project value", borderColor: "border-l-sky-500" },
+    { title: "Other Expenses", value: formatCurrency(totalExpenses), icon: TrendingDown, desc: "Material & operations", borderColor: "border-l-rose-500" },
     { title: "Project Net Profit", value: formatCurrency(netProfit), icon: IndianRupee, desc: "Revenue - Total Costs", highlight: true }
   ];
 
   return (
     <div className="space-y-8">
       {/* Welcome Widget */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-slate-50">Overview Dashboard</h1>
-          <p className="text-slate-500 text-sm">Real-time indicators and operational financial health metrics.</p>
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-slate-900 to-indigo-950 text-white p-6 md:p-8 rounded-2xl border-none shadow-md overflow-hidden relative dark:from-slate-900 dark:to-slate-950">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/10 rounded-full filter blur-2xl pointer-events-none" />
+        <div className="space-y-1.5 relative z-10">
+          <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-white">Overview Dashboard</h1>
+          <p className="text-slate-300 text-xs md:text-sm">Real-time indicators, operational logistics, and financial payroll metrics.</p>
         </div>
       </div>
 
@@ -114,17 +115,22 @@ export default async function DashboardPage() {
           return (
             <Card 
               key={stat.title} 
-              className={stat.highlight ? "bg-indigo-600 text-white border-indigo-600 shadow-indigo-600/10" : "bg-white"}
+              className={cn(
+                "hover-lift shadow-sm duration-300 border border-slate-200/50 dark:border-slate-800/60",
+                stat.highlight 
+                  ? "bg-indigo-600 text-white border-indigo-700/30 shadow-lg shadow-indigo-600/15" 
+                  : cn("bg-white dark:bg-slate-900 border-l-4", stat.borderColor)
+              )}
             >
               <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className={`text-xs font-semibold uppercase tracking-wider ${stat.highlight ? "text-indigo-200" : "text-slate-400"}`}>
+                <CardTitle className={`text-xs font-bold uppercase tracking-wider ${stat.highlight ? "text-indigo-200" : "text-slate-400 dark:text-slate-500"}`}>
                   {stat.title}
                 </CardTitle>
-                <Icon className={`h-4.5 w-4.5 ${stat.highlight ? "text-white" : "text-indigo-600"}`} />
+                <Icon className={`h-4.5 w-4.5 ${stat.highlight ? "text-white" : "text-indigo-600 dark:text-indigo-400"}`} />
               </CardHeader>
               <CardContent>
                 <div className="text-lg md:text-xl font-bold tracking-tight">{stat.value}</div>
-                <p className={`text-[10px] mt-1 ${stat.highlight ? "text-indigo-100" : "text-slate-400"}`}>{stat.desc}</p>
+                <p className={`text-[10px] mt-1 ${stat.highlight ? "text-indigo-100" : "text-slate-400 dark:text-slate-500"}`}>{stat.desc}</p>
               </CardContent>
             </Card>
           );

@@ -78,10 +78,31 @@
 
 /* Glassmorphism Classes for SaaS Cards */
 .glass-panel {
-  @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-sm;
+  @apply bg-white/80 backdrop-blur-lg border border-slate-200/50 shadow-sm dark:bg-slate-900/80 dark:border-slate-800/60;
 }
-.dark .glass-panel {
-  @apply bg-slate-900/70 backdrop-blur-md border border-slate-800/50 shadow-sm;
+
+/* Micro-interactions & animations */
+.hover-lift {
+  @apply transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md hover:border-slate-300/60 dark:hover:border-slate-700/60;
+}
+.active-scale {
+  @apply active:scale-[0.98] transition-transform duration-100;
+}
+
+/* modern mesh gradient backgrounds */
+.mesh-gradient {
+  background-color: #f8fafc;
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.06) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(168, 85, 247, 0.06) 0px, transparent 50%),
+    radial-gradient(at 50% 100%, rgba(99, 102, 241, 0.03) 0px, transparent 50%);
+}
+.dark .mesh-gradient {
+  background-color: #0b0f19;
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.12) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(168, 85, 247, 0.12) 0px, transparent 50%),
+    radial-gradient(at 50% 100%, rgba(99, 102, 241, 0.06) 0px, transparent 50%);
 }
 
 /* Customized Scrollbar styling */
@@ -93,8 +114,8 @@
   @apply bg-transparent;
 }
 ::-webkit-scrollbar-thumb {
-  @apply bg-slate-300 rounded-full dark:bg-slate-700;
+  @apply bg-slate-300 rounded-full dark:bg-slate-800;
 }
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-slate-400 dark:bg-slate-600;
+  @apply bg-slate-400 dark:bg-slate-700;
 }
